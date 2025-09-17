@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+@theme {
+  --font-poppins: "Poppins", sans-serif;
+  --font-Raleway: "Raleway", sans-serif;
+  --color-green: #2eafff;
+  --color-blue-500: #3B82F6;
+  --color-gray-900: #111827;
+  --color-blue-400: #60A5FA;
+
+
+
+
+
+}
+
+canvas {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+body {
+  background-color: black;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* background: transparent; */
+
+  cursor: pointer;
+}
+
+option {
+  background: #0505056e;
+}
+
+option:hover {
+  background: #2eafff !important;
+  color: white !important;
+}
+
+
+.slick-slide {
+  transition: transform 0.3s ease !important;
+}
+
+
+
+.slick-list {
+  overflow-y: visible !important;
+  scrollbar-width: none;
+  padding: 20px 0 !important;
+}
+
+
+
+.slick-center .card {
+  transform: scale(1.1);
+  z-index: 20;
+  position: relative;
+  transform-origin: center center;
+}
+
+
+
+
+
+
+
+.border {
+  border: 2px solid red;
+}
+
+
+.about {
+  background: radial-gradient(circle at top, #003186, #00153a, #000E26);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
+
+}
+
+.textgreen {
+  color: #088DE1;
+}
+
+.bggreen {
+  background-color: #2eafff;
+}
+
+
+#particles canvas {
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+
+
+
+
+
+
+
+
+html,
+body {
+  overflow-x: hidden;
+  overscroll-behavior: none;
+  /* Consider removing this on mobile */
+  touch-action: auto;
+  /* Enable native touch interaction */
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+html {
+  scrollbar-width: none;
+  touch-action: auto;
+  /* or manipulation */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar for Edge and IE */
+/* {
+  -ms-overflow-style: none;
+} */
+
+.aboutcount,
+.braincont,
+.belivecount,
+.clientcount,
+.blogcount,
+.contactcount,
+.footercount {
+  transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1),
+    opacity 0.8s ease;
+  backface-visibility: hidden;
+}
+
+
+@media (max-width: 639px) {
+
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+
+  .scrollable {
+    touch-action: pan-y;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
