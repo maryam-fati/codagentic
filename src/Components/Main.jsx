@@ -254,7 +254,7 @@ const Main = () => {
 
   const togglePlay = () => {
     const audio = audioRef.current;
-    if (!audio || showwell) return; // Don't allow manual toggle when Welcome is shown
+    if (!audio) return; // Don't allow manual toggle when Welcome is shown
 
     const shouldPlay = !isPlaying;
 
@@ -447,12 +447,12 @@ const Main = () => {
           <SoundWave isPlaying={isPlaying} togglePlay={togglePlay} />
         </div>
         
-        {showwell && (
+        {/* {showwell && ( */}
           <Welcome
             togglePlay={togglePlay}
             startAutoScroll={startAutoScrollInterval}
           />
-        )}
+        {/* )} */}
 
         <SmoothScrollProvider>
           <Hero data={data} data4={data3} />

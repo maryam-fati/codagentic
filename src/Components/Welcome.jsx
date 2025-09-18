@@ -242,11 +242,11 @@ const AIParticleSystem = ({ mouseX, mouseY, isHovering }) => {
           const packetX =
             connection.x1 +
             (connection.x2 - connection.x1) *
-              (Math.sin(Date.now() * 0.005) * 0.5 + 0.5);
+            (Math.sin(Date.now() * 0.005) * 0.5 + 0.5);
           const packetY =
             connection.y1 +
             (connection.y2 - connection.y1) *
-              (Math.sin(Date.now() * 0.005) * 0.5 + 0.5);
+            (Math.sin(Date.now() * 0.005) * 0.5 + 0.5);
 
           ctx.fillStyle = `rgba(0, 191, 255, ${connection.activity})`;
           ctx.beginPath();
@@ -339,14 +339,12 @@ const AIParticleSystem = ({ mouseX, mouseY, isHovering }) => {
           );
           dataGradient.addColorStop(
             0,
-            `rgba(${
-              particle.color === "#00BFFF" ? "0, 191, 255" : "255, 255, 255"
+            `rgba(${particle.color === "#00BFFF" ? "0, 191, 255" : "255, 255, 255"
             }, ${particle.opacity})`
           );
           dataGradient.addColorStop(
             1,
-            `rgba(${
-              particle.color === "#00BFFF" ? "0, 191, 255" : "255, 255, 255"
+            `rgba(${particle.color === "#00BFFF" ? "0, 191, 255" : "255, 255, 255"
             }, 0)`
           );
 
@@ -472,13 +470,13 @@ const AILogo3D = ({ mouseX, mouseY, isHovering }) => {
           animate={{
             filter: isHovering
               ? [
-                  "brightness(1.3) saturate(1.5) drop-shadow(0 0 40px rgba(0,191,255,0.8))",
-                  "brightness(1.3) saturate(1.5) drop-shadow(0 0 40px rgba(0,191,255,0.8))",
-                ]
+                "brightness(1.3) saturate(1.5) drop-shadow(0 0 40px rgba(0,191,255,0.8))",
+                "brightness(1.3) saturate(1.5) drop-shadow(0 0 40px rgba(0,191,255,0.8))",
+              ]
               : [
-                  "brightness(1.1) saturate(1.2) drop-shadow(0 0 20px rgba(0,191,255,0.4))",
-                  "brightness(1.1) saturate(1.2) drop-shadow(0 0 20px rgba(0,191,255,0.4))",
-                ],
+                "brightness(1.1) saturate(1.2) drop-shadow(0 0 20px rgba(0,191,255,0.4))",
+                "brightness(1.1) saturate(1.2) drop-shadow(0 0 20px rgba(0,191,255,0.4))",
+              ],
           }}
           transition={{
             duration: 2,
@@ -625,51 +623,60 @@ const Welcome = ({ togglePlay, startAutoScroll }) => {
     [mouseX, mouseY]
   );
 
-  const setToken = (token) => {
-    const now = new Date();
-    const expiry = now.getTime() + 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+  const setToken = () => {
+    // const now = new Date();
+    // const expiry = now.getTime() + 2 * 60 * 60 * 1000; // 2 hours in milliseconds
 
-    const item = {
-      token: token,
-      expiry: expiry,
-    };
+    // const item = {
+    //   token: token,
+    //   expiry: expiry,
+    // };
 
-    localStorage.setItem("authToken", JSON.stringify(item));
+    // localStorage.setItem("authToken", JSON.stringify(item));
+    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
+    document.body.style.height = "auto";
+    document.documentElement.style.height = "auto";
+    document.body.style.touchAction = "auto";
+    document.documentElement.style.touchAction = "auto";
   };
 
   const handleStart = () => {
     setIsVisible(false);
-    setToken("show");
+    document.body.style.overflow = "auto";
+    document.documentElement.style.overflow = "auto";
+    document.body.style.height = "auto";
+    document.documentElement.style.height = "auto";
+    document.body.style.touchAction = "auto";
+    document.documentElement.style.touchAction = "auto";
+    setToken()
 
+    // setTimeout(() => {
+
+    togglePlay()
+
+    // Trigger smooth scroll to the first section after welcome disappears
+    // setTimeout(() => {
+    // const firstSection = document.getElementById("intro");
+    // if (firstSection) {
+    //   firstSection.scrollIntoView({
+    //     behavior: "smooth",
+    //     block: "start",
+    //   });
+    // }
+
+    // Start auto-scroll after a delay
     setTimeout(() => {
-      document.body.style.overflow = "auto";
-      document.documentElement.style.overflow = "auto";
-      document.body.style.height = "auto";
-      document.documentElement.style.height = "auto";
-      document.body.style.touchAction = "auto";
-      document.documentElement.style.touchAction = "auto";
+    if (startAutoScroll) {
+      startAutoScroll();
       togglePlay();
 
-      // Trigger smooth scroll to the first section after welcome disappears
-      setTimeout(() => {
-        // const firstSection = document.getElementById("intro");
-        // if (firstSection) {
-        //   firstSection.scrollIntoView({
-        //     behavior: "smooth",
-        //     block: "start",
-        //   });
-        // }
-
-        // Start auto-scroll after a delay
-        setTimeout(() => {
-          if (startAutoScroll) {
-            startAutoScroll();
-          } else {
-            console.log("Welcome: startAutoScroll function is not available");
-          }
-        }, 4000); // Start auto-scroll 4 seconds after scrolling to first section
-      }, 500); // Small delay to ensure welcome animation completes
-    }, 1000);
+    } else {
+      console.log("Welcome: startAutoScroll function is not available");
+    }
+    }, 10000); // Start auto-scroll 4 seconds after scrolling to first section
+    // }, 500); // Small delay to ensure welcome animation completes
+    // }, 1000);
   };
 
   // In your parent component
@@ -734,7 +741,7 @@ const Welcome = ({ togglePlay, startAutoScroll }) => {
           <div className="relative z-10 flex flex-col items-center space-y-16">
             {/* AI logo */}
             <motion.div
-              className="relative w-96 h-32 md:w-[700px] md:h-56"
+              className="relative w-[340px] md:w-[700px] md:h-56"
               onHoverStart={() => setIsLogoHovering(true)}
               onHoverEnd={() => setIsLogoHovering(false)}
               initial={{ y: -150, opacity: 0, rotateX: -90 }}
@@ -757,7 +764,7 @@ const Welcome = ({ togglePlay, startAutoScroll }) => {
 
             {/* AI subtitle with typing effect */}
             <motion.div
-              className="text-center h-20 flex items-center relative"
+              className="text-center mx-2 md:mx-0 h-20 flex items-center relative"
               initial={{ opacity: 0, y: 80 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.5, delay: 1.2 }}

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin panel from search engines
+Disallow: /Panel
+Disallow: /Login
+
+# Sitemap location
+Sitemap: https://www.codagentic.software/sitemap.xml
