@@ -528,7 +528,7 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
       </div>
 
       {/* Scroll Triggers */}
-      <div id="intro" className="About  h-[300vh] md:h-[500vh] lg:h-[1000vh] "></div>
+      <div id="intro" className="About  h-[500vh] md:h-[500vh] lg:h-[1000vh] "></div>
       <div id="industries" className="Indust   h-[700vh] md:h-[800vh] lg:h-[1000vh]"></div>
       <div id="service" className="Service  h-[600vh] md:h-[1000vh] w-full"></div>
       <div id="about" className="Brains h-[200vh]  md:h-[300vh] lg:h-[400vh] w-full"></div>
