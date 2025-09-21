@@ -8,7 +8,7 @@ const Card = ({ title, des, list = [], list2 = [], index }) => {
   const cardRef = useRef(null);
 
   return (
-    <div className={`card card${index} absolute shadow-2xl shadow-black border-[1px] !border-white bg-[#00437a] hover:scale-110 md:hover:scale-125 scale-110 md:-translate-x-3/4 left-1/2 md:left-[calc(100%-150px)] -translate-x-1/2 rounded-2xl p-6 px-2 top-1/6 md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-[360px] max-h-[350px] md:h-[400px]`}>
+    <div className={`card card${index} absolute shadow-2xl shadow-black border-[1px] !border-white bg-[#00437a] hover:scale-110 md:hover:scale-125 scale-110 md:-translate-x-3/4 left-1/2 md:left-[calc(100%-150px)] -translate-x-1/2 rounded-2xl p-6 px-2 top-1/6  md:top-1/2 md:-translate-y-1/2 w-[90%] md:w-[320px]  lg:w-[360px] max-h-[350px] lg:h-[400px]`}>
       <div ref={cardRef} className="bg-[#00437a] md:hover:scale-105 rounded-xl transition-all duration-500 ease-in-out space-y-4 md:space-y-6 w-full h-full flex flex-col justify-center items-center text-center">
         <h2 className="text-xl">{title}</h2>
         <p className="text-xs md:text-sm text-white font-sans">{des}</p>

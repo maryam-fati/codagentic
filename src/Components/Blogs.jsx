@@ -36,7 +36,7 @@ const navigate = useNavigate();
 
     gsap.fromTo(
       split.chars,
-      { opacity: 0, y: 50, },
+      { opacity: 0, y: 10, },
       {
         opacity: 1,
         y: 0,
@@ -74,33 +74,46 @@ const navigate = useNavigate();
 
 
 
+// const data = [
+//   {
+//     title: "Exploring the Future of Web Development",
+//     image: "https://picsum.photos/600/400?random=1",
+//     date: "2025-09-10",
+//     discription:
+//       "A deep dive into how modern frameworks like Next.js and React are shaping the web of tomorrow."
+//   },
+//   {
+//     title: "The Power of AI in Everyday Life",
+//     image: "https://picsum.photos/600/400?random=2",
+//     date: "2025-09-12",
+//     discription:
+//       "From smart assistants to advanced analytics, AI continues to revolutionize how we live and work."
+//   },
+//   {
+//     title: "10 Tips for Writing Cleaner Code",
+//     image: "https://picsum.photos/600/400?random=3",
+//     date: "2025-09-15",
+//     discription:
+//       "Practical steps every developer can take to write more maintainable, scalable, and readable code."
+//   },
+//   {
+//     title: "Design Trends to Watch in 2025",
+//     image: "https://picsum.photos/600/400?random=4",
+//     date: "2025-09-18",
+//     discription:
+//       "Minimalism, immersive 3D, and bold typography — what to expect in upcoming design trends."
+//   },
+//   {
+//     title: "Optimizing Performance in React Apps",
+//     image: "https://picsum.photos/600/400?random=5",
+//     date: "2025-09-20",
+//     discription:
+//       "Learn how to use memoization, lazy loading, and code splitting to make your React apps blazing fast."
+//   }
+// ];
 
-  // const data = [
-  //   {
-  //     img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //     title: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-  //     description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum quas libero explicabo voluptate ipsam aliquam pariatur impedit iste adipisci numquam minus, sequi tempora maiores mollitia eligendi quod nostrum. In, tempora.",
-  //     date: "22 May 2025",
-  //   },
-  //   {
-  //     img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //     title: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-  //     description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum quas libero explicabo voluptate ipsam aliquam pariatur impedit iste adipisci numquam minus, sequi tempora maiores mollitia eligendi quod nostrum. In, tempora.",
-  //     date: "22 May 2025",
-  //   },
-  //   {
-  //     img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //     title: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-  //     description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum quas libero explicabo voluptate ipsam aliquam pariatur impedit iste adipisci numquam minus, sequi tempora maiores mollitia eligendi quod nostrum. In, tempora.",
-  //     date: "22 May 2025",
-  //   },
-  //   {
-  //     img: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-  //     title: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-  //     description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum quas libero explicabo voluptate ipsam aliquam pariatur impedit iste adipisci numquam minus, sequi tempora maiores mollitia eligendi quod nostrum. In, tempora.",
-  //     date: "22 May 2025",
-  //   }
-  // ];
+
+    
   const handleRedirect = (title) => {
   const encodedTitle = encodeURIComponent(title); // Handles spaces/special characters
   navigate(`/blog/${encodedTitle}`);
@@ -109,10 +122,10 @@ const navigate = useNavigate();
 
 return (
   <div ref={containerRef} className="z-[999] relative min-h-screen">
-    <div className="mx-auto flex flex-col my-[15vh] md:my-0 items-center justify-center lg:px-10 container md:absolute md:top-1/2 z-[50] md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 space-y-10 text-[white] font-poppins">
+    <div className="mx-auto flex flex-col my-[15vh] md:my-0 items-center justify-center lg:px-[100px] container md:absolute md:top-1/2 z-[50] md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 space-y-10 text-[white] font-poppins">
       <div className="flex flex-wrap items-center justify-between space-y-20 uppercase xl:p-10">
-        <h2 ref={titleRef} className="lg:text-4xl text-lg px-2 text-center md:mx-0 mx-auto">
-          Featured Blog Posts
+        <h2 ref={titleRef} className="lg:text-4xl md:text-xl text-lg px-2 text-center md:mx-0 mx-auto">
+          <span className="text-green">Featured</span> Blog Posts
         </h2>
       </div>
       
@@ -132,7 +145,7 @@ return (
               spaceBetween: 25
             },
             1024: {
-              slidesPerView: 3,
+              slidesPerView: 2,
               spaceBetween: 30
             },
             1280: {
@@ -143,11 +156,14 @@ return (
         >
           {data.map((data, index) => (
             <SwiperSlide key={index} className="h-auto">
-              <div className="cursor-pointer h-full" onClick={() => handleRedirect(data.title)}>
+              <div className="cursor-pointer  py-4 px-2 md:px-0 h-full" onClick={() => handleRedirect(data.title)}>
                 <div className="
                   w-full 
-                  h-[400px]
-                  max-w-[380px] 
+                  
+                 md:h-[400px]
+                 
+                  min-w-[320px] 
+                  md:w-[320px]
                   mx-auto
 
                   overflow-hidden 
@@ -201,7 +217,7 @@ return (
                     {/* Title Container - Fixed Space */}
                     <div className="h-[60px] flex items-start">
                       <motion.h1 
-                        className="text-base md:text-lg line-clamp-2 font-medium font-Raleway leading-tight hover:text-gray-200 transition-colors duration-200"
+                        className="text-base md:text-lg line-clamp-2 font-medium font-poppins leading-tight hover:text-gray-200 transition-colors duration-200"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ 
                           opacity: 1, 
@@ -270,6 +286,7 @@ return (
                   </div>
                 </div>
               </div>
+              
             </SwiperSlide>
           ))}
         </Swiper>

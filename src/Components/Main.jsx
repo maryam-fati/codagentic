@@ -14,9 +14,10 @@ import axios from "axios";
 import {
   Play,
   Pause,
+  ChevronLeft, ChevronRight,
   RotateCcw,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const debounce = (func, delay) => {
   let timeoutId;
@@ -28,52 +29,62 @@ const debounce = (func, delay) => {
 
 const Main = () => {
   const audioRef = useRef(new Audio(music));
+  const [isControlsVisible, setIsControlsVisible] = useState(true);
+
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isContactVisible, setIsContactVisible] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const contactRef = useRef(null);
+
   const [showwell, setShowwell] = useState(false);
   const isPlayingRef = useRef(isPlaying);
-  const timeoutRef = useRef(null);
   const url = import.meta.env.VITE_SERVER;
   const [data, setData] = useState([]);
   const [data3, setData3] = useState([]);
   const [isAutoScrolling, setIsAutoScrolling] = useState(false);
   const scrollIntervalRef = useRef(null);
-  const lastScrollPosRef = useRef(window.pageYOffset);
-  const stuckCheckIntervalRef = useRef(null);
-  const scrollTimeoutRef = useRef(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
-  useEffect(() => {
-    if (isAutoScrolling) {
-      // Start stuck detection
-      stuckCheckIntervalRef.current = setInterval(() => {
-        const currentScroll = window.pageYOffset;
-        if (currentScroll === lastScrollPosRef.current) {
-          // Not moving, try to restart auto-scroll
-          console.log("Detected stuck scroll, re-triggering auto-scroll");
-          startAutoScrollInterval();
-        } else {
-          // Moving, update last position
-          lastScrollPosRef.current = currentScroll;
-        }
-      }, 100);
+  const handleButtonClick = () => {
+    if (!isExpanded) {
+      setIsExpanded(true);
     } else {
-      // Stop stuck detection
-      if (stuckCheckIntervalRef.current) {
-        clearInterval(stuckCheckIntervalRef.current);
-        stuckCheckIntervalRef.current = null;
-      }
+      setTimeout(() => {
+
+        setIsExpanded(false);
+      }, 3000);
+      handleClick();
+
     }
-    // Cleanup on unmount
-    return () => {
-      if (stuckCheckIntervalRef.current) {
-        clearInterval(stuckCheckIntervalRef.current);
-        stuckCheckIntervalRef.current = null;
-      }
-    };
-  }, [isAutoScrolling]);
+  };
+
+
+  // useEffect(() => {
+  //   if (isAutoScrolling) {
+  //     // Start stuck detection
+  //     stuckCheckIntervalRef.current = setInterval(() => {
+  //       const currentScroll = window.pageYOffset;
+  //       if (currentScroll === lastScrollPosRef.current) {
+  //         // Not moving, try to restart auto-scroll
+  //         startAutoScrollInterval();
+  //       } else {
+  //         // Moving, update last position
+  //         lastScrollPosRef.current = currentScroll;
+  //       }
+  //     }, 100);
+  //   } else {
+  //     // Stop stuck detection
+  //     if (stuckCheckIntervalRef.current) {
+  //       clearInterval(stuckCheckIntervalRef.current);
+  //       stuckCheckIntervalRef.current = null;
+  //     }
+  //   }
+  //   // Cleanup on unmount
+  //   return () => {
+  //     if (stuckCheckIntervalRef.current) {
+  //       clearInterval(stuckCheckIntervalRef.current);
+  //       stuckCheckIntervalRef.current = null;
+  //     }
+  //   };
+  // }, [isAutoScrolling]);
 
   const stopAutoScrollInterval = () => {
     console.log("Stopping auto-scroll interval");
@@ -84,61 +95,45 @@ const Main = () => {
     setIsAutoScrolling(false);
   };
 
-  const startAutoScrollInterval = () => {
-    if (isAutoScrolling) return;
-
-    console.log("Starting auto-scroll with setInterval");
-
+const startAutoScrollInterval = () => {
+    // if (isAutoScrolling) return;
     const maxScroll =
       document.documentElement.scrollHeight - window.innerHeight;
-    console.log("Max scroll height:", maxScroll);
-
     if (maxScroll <= 0) {
-      console.log("Page is not scrollable");
       return;
     }
 
     setIsAutoScrolling(true);
 
     const interval = setInterval(() => {
-      console.log("Auto-scroll tick - current position:", window.pageYOffset);
-
       const currentScroll = window.pageYOffset;
 
       if (currentScroll >= maxScroll) {
-        // Restart from top
-        console.log("Reached bottom, restarting from top");
         stopAutoScrollInterval();
       } else {
-        // Continue scrolling - INCREASED SPEED HERE
         window.scrollBy(0, 15); // Increased from 15 to 30 pixels per interval
-        console.log("Scrolled by 30px, new position:", window.pageYOffset);
       }
-    }, 25); // Decreased from 30ms to 5ms interval = ~200fps - MUCH FASTER
+    }, 40); // Decreased from 30ms to 5ms interval = ~200fps - MUCH FASTER
 
     scrollIntervalRef.current = interval;
   };
 
-  const restartAutoScroll = () => {
-    console.log("Restarting auto-scroll");
+const restartAutoScroll = () => {
     stopAutoScrollInterval();
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      startAutoScrollInterval();
-    }, 500);
+    // window.scrollTo(0, 0);
+    window.scrollTo({
+  top: 0,
+  left: 0,
+  behavior: "smooth"
+});
+
+
+    // setTimeout(() => {
+    //   startAutoScrollInterval();
+    // }, 500);
   };
 
-  useEffect(() => {
-    return () => {
-      if (scrollIntervalRef.current) {
-        try {
-          cancelAnimationFrame(scrollIntervalRef.current);
-        } catch (e) {
-          clearInterval(scrollIntervalRef.current);
-        }
-      }
-    };
-  }, []);
+
 
   const getdata = async () => {
     try {
@@ -182,75 +177,75 @@ const Main = () => {
   }, []);
 
   // Audio control based on scroll
-  useEffect(() => {
-    const audio = audioRef.current;
-    
-    const handleScrollStart = () => {
-      // Only play if showwell is false (Welcome component is not shown)
-      if (showwell) return;
-      
-      if (audio.paused) {
-        audio.play().catch(console.error);
-      }
-      gsap.to(audio, { volume: 0.3, duration: 0.5 });
-      setIsPlaying(true);
-    };
+  // useEffect(() => {
+  //   const audio = audioRef.current;
 
-    const handleScrollEnd = debounce(() => {
-      // Stop audio when scrolling stops
-      gsap.to(audio, {
-        volume: 0,
-        duration: 1,
-        onComplete: () => {
-          audio.pause();
-          setIsPlaying(false);
-        }
-      });
-    }, 2000); // 2 seconds after scroll stops
+  //   const handleScrollStart = () => {
+  //     // Only play if showwell is false (Welcome component is not shown)
+  //     if (showwell) return;
 
-    const handleScroll = () => {
-      handleScrollStart();
-      handleScrollEnd();
-    };
+  //     if (audio.paused) {
+  //       audio.play().catch(console.error);
+  //     }
+  //     gsap.to(audio, { volume: 0.3, duration: 0.5 });
+  //     setIsPlaying(true);
+  //   };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+  //   const handleScrollEnd = debounce(() => {
+  //     // Stop audio when scrolling stops
+  //     gsap.to(audio, {
+  //       volume: 0,
+  //       duration: 1,
+  //       onComplete: () => {
+  //         audio.pause();
+  //         setIsPlaying(false);
+  //       }
+  //     });
+  //   }, 2000); // 2 seconds after scroll stops
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [showwell]); // Add showwell as dependency
+  //   const handleScroll = () => {
+  //     handleScrollStart();
+  //     handleScrollEnd();
+  //   };
+
+  //   window.addEventListener('scroll', handleScroll, { passive: true });
+
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, [showwell]); // Add showwell as dependency
 
   // Start audio when showwell becomes false
-  useEffect(() => {
-    const audio = audioRef.current;
-    
-    if (!showwell) {
-      // Reset audio to start and play
-      audio.currentTime = 0;
-      audio.play().then(() => {
-        gsap.to(audio, {
-          volume: 0.3,
-          duration: 1,
-          onComplete: () => setIsPlaying(true),
-        });
-      }).catch(console.error);
-      
-      // Start auto scroll after 3 seconds
-      setTimeout(() => {
-        startAutoScrollInterval();
-      }, 5000);
-    } else {
-      // Stop audio when showwell is true
-      gsap.to(audio, {
-        volume: 0,
-        duration: 1,
-        onComplete: () => {
-          audio.pause();
-          setIsPlaying(false);
-        },
-      });
-    }
-  }, [showwell]);
+  // useEffect(() => {
+  //   const audio = audioRef.current;
+
+  //   if (!showwell) {
+  //     // Reset audio to start and play
+  //     audio.currentTime = 0;
+  //     audio.play().then(() => {
+  //       gsap.to(audio, {
+  //         volume: 0.3,
+  //         duration: 1,
+  //         onComplete: () => setIsPlaying(true),
+  //       });
+  //     }).catch(console.error);
+
+  //     // Start auto scroll after 3 seconds
+  //     setTimeout(() => {
+  //       startAutoScrollInterval();
+  //     }, 5000);
+  //   } else {
+  //     // Stop audio when showwell is true
+  //     gsap.to(audio, {
+  //       volume: 0,
+  //       duration: 1,
+  //       onComplete: () => {
+  //         audio.pause();
+  //         setIsPlaying(false);
+  //       },
+  //     });
+  //   }
+  // }, [showwell]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -303,7 +298,7 @@ const Main = () => {
       setShowwell(true);
       return;
     }
-    
+
     const item = JSON.parse(itemStr);
     const now = new Date();
 
@@ -339,21 +334,22 @@ const Main = () => {
   }, []);
 
   return (
-    <>
-      <div className="relative ">
-        <div className="fixed top-0  left-0 z-[-10] w-full h-screen">
-          <video
-            src="/bg4.mp4"
-            ref={videoRef}
-            loop
-            autoPlay
-            muted
-            preload="true"
-            className="h-screen  w-full object-bottom  object-cover"
-          />
-        </div>
-        
-        <div className="w-[110px]  hidden md:flex items-start justify-start h-[110px] glow fixed !z-[999] pointer-events-none">
+    <div  className="relative ">
+      <div className="fixed top-0  left-0 z-[-100] w-full h-screen">
+        <video
+          ref={videoRef}
+          loop
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          className="h-screen w-full object-bottom object-cover"
+        >
+          <source src="/bg4.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      <div className="w-[110px]  hidden md:flex items-start justify-start h-[110px] glow fixed  pointer-events-none">
           <div
             className="w-[26px] h-[26px] rounded-full fixed"
             style={{
@@ -364,101 +360,131 @@ const Main = () => {
           />
         </div>
 
-        <div
-          onClick={handleClick}
-          className={`fixed bottom-4  left-3 md:bottom-3  md:left-2 text-sm border px-4 rounded-full hover:bg-gradient-to-br from-[#00b4cc] transition-all duration-300 ease-in-out to-green py-2 !border-green text-white hidden md:flex items-center gap-2 group  cursor-pointer ${
-            isContactVisible ? "hidden" : ""
-          }`}
+      <motion.div
+        className={`fixed bottom-4 left-3 md:bottom-3 !z-[999] md:left-2 text-sm border rounded-full hover:bg-gradient-to-br from-[#00b4cc] transition-all duration-300 ease-in-out to-green !border-green text-white hidden md:flex items-center group cursor-pointer overflow-hidden`}
+        animate={{
+          width: isExpanded ? "auto" : "50px",
+          paddingLeft: isExpanded ? "16px" : "15px",
+          paddingRight: isExpanded ? "16px" : "15px",
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+      >
+        {/* Lightbulb Icon and Content */}
+        <motion.div
+          onClick={handleButtonClick}
+          className="flex items-center gap-2 py-2 cursor-pointer"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
-          {window.innerWidth < 768 && !isExpanded ? (
-            <Lightbulb className="text-white" size={18} />
-          ) : (
-            <>
-              Got an idea? Let's chat{" "}
-              <MoveRight
-                className="text-white group-hover:translate-x-2 transition-all duration-300 ease-in-out"
-                size={18}
-              />
-            </>
-          )}
-        </div>
+          <Lightbulb className="text-white flex-shrink-0" size={18} />
 
-        <Background />
-        <CustomScrollbar />
+          {/* Expandable Text Content */}
+          <AnimatePresence>
+            {isExpanded && (
+              <motion.div
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: "auto", opacity: 1 }}
+                exit={{ width: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="flex items-center gap-2 whitespace-nowrap overflow-hidden"
+              >
+                <span>Got an idea? Let's chat</span>
+                <MoveRight
+                  className="text-white group-hover:translate-x-2 transition-all duration-300 ease-in-out flex-shrink-0"
+                  size={18}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </motion.div>
 
-        <Navbar
-          isPlaying={isPlaying}
-          togglePlay={togglePlay}
-          isAutoScrolling={isAutoScrolling}
-        />
 
-        <div className="flex fixed bottom-5 md:bottom-8 right-8  !z-[100] items-center gap-4">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            animate={
-              isAutoScrolling
-                ? {
-                    scale: [1, 1.05, 1],
-                    transition: {
-                      duration: 1.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    },
+       {/*  <Background /> */}
+      <CustomScrollbar />
+
+      <Navbar isAutoScrolling={isAutoScrolling} />
+
+      <div title="Sound and Scrolling menu" className={`${isControlsVisible ? "backdrop-blur-sm" : ""} flex fixed bottom-[2px]  md:bottom-6 shadow-sm shadow-black  rounded-md p-2 right-[2px] md:right-6 !z-[100] items-center `}>
+        {/* Collapsible Arrow Button */}
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => setIsControlsVisible(!isControlsVisible)}
+          className=" cursor-pointer   size-[40px] focus:outline-none active:outline-none  flex items-center justify-center !border-green text-white  transition-all duration-300 "
+          title={isControlsVisible ? "Hide Controls" : "Show Controls"}
+        >
+          {isControlsVisible ? <ChevronRight size={24} /> : <ChevronLeft size={24} />}
+        </motion.button>
+
+        {/* Animated Controls Container */}
+        <AnimatePresence>
+          {isControlsVisible && (
+            <motion.div
+              initial={{ x: 100, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 100, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="flex items-center gap-4 "
+            >
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                animate={
+                  isAutoScrolling
+                    ? {
+                      scale: [1, 1.05, 1],
+                      transition: {
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      },
+                    }
+                    : {}
+                }
+                onClick={() => {
+                  if (isAutoScrolling) {
+                    stopAutoScrollInterval();
+                  } else {
+                    startAutoScrollInterval();
                   }
-                : {}
-            }
-            onClick={() => {
-              console.log(
-                "Play/Pause button clicked, isAutoScrolling:",
-                isAutoScrolling
-              );
+                }}
+                className={`rounded-full cursor-pointer box-border shadow-sm shadow-green hover:scale-105 size-[40px] border-[1px] flex items-center justify-center !border-green text-white hover:bg-green hover:text-white transition-all duration-300 ${isAutoScrolling ? "bg-green text-white" : "bg-transparent"
+                  }`}
+                title={isAutoScrolling ? "Pause Auto-Scroll" : "Start Auto-Scroll"}
+              >
+                {isAutoScrolling ? <Pause size={16} /> : <Play size={16} />}
+              </motion.button>
 
-              if (isAutoScrolling) {
-                console.log("Calling stopAutoScroll...");
-                stopAutoScrollInterval();
-              } else {
-                console.log("Calling startAutoScroll...");
-                startAutoScrollInterval();
-              }
-            }}
-            className={` rounded-full cursor-pointer shadow-sm shadow-green hover:scale-105 size-[40px] border-[1px] flex items-center justify-center !border-green text-white hover:bg-green hover:text-white transition-all duration-300 ${
-              isAutoScrolling ? "bg-green text-white" : "bg-transparent"
-            }`}
-            title={isAutoScrolling ? "Pause Auto-Scroll" : "Start Auto-Scroll"}
-          >
-            {isAutoScrolling ? <Pause size={16} /> : <Play size={16} />}
-          </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => {
+                  restartAutoScroll()
+                }}
+                className="cursor-pointer rounded-full box-border  shadow-sm shadow-green size-[40px] border-[1px] flex items-center justify-center !border-green text-white hover:bg-green hover:text-white hover:scale-105 transition-all duration-300 bg-transparent"
+                title="Back to Top"
+              >
+                <RotateCcw size={16} />
+              </motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => {
-              console.log("Restart button clicked");
-              console.log("Calling restartAutoScroll...");
-              restartAutoScroll();
-            }}
-            className=" cursor-pointer rounded-full shadow-sm shadow-green size-[40px] border-[1px] flex items-center justify-center !border-green text-white hover:bg-green hover:text-white hover:scale-105 transition-all duration-300 bg-transparent"
-            title="Restart Auto-Scroll"
-          >
-            <RotateCcw size={16} />
-          </motion.button>
-          
-          <SoundWave isPlaying={isPlaying} togglePlay={togglePlay} />
-        </div>
-        
-        {/* {showwell && ( */}
-          <Welcome
+              <SoundWave isPlaying={isPlaying} togglePlay={togglePlay} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* {showwell && ( */}
+      {/* <Welcome
             togglePlay={togglePlay}
             startAutoScroll={startAutoScrollInterval}
-          />
-        {/* )} */}
+          /> */}
+      {/* )} */}
 
-        <SmoothScrollProvider>
-          <Hero data={data} data4={data3} />
-        </SmoothScrollProvider>
-      </div>
-    </>
+      <SmoothScrollProvider>
+        <Hero data={data} data4={data3} />
+      </SmoothScrollProvider>
+    </div>
   );
 };
 

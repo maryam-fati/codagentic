@@ -76,16 +76,16 @@ const Service = ({ data2, leng }) => {
     end: `+=${sections * window.innerHeight}`,
   };
   const desktopSettings = {
-    end: '+=10000',
+    end: 'bottom bottom',
   };
 
   useGSAP(() => {
     let tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.Service',
-        pin: true,
+        // pin: true,
         start: "top top",
-        scrub: true,
+        scrub: 2,
         snap: {
           snapTo: "labelsDirectional",
           duration: { min: 0.2, max: 0.5 },
@@ -172,20 +172,20 @@ const Service = ({ data2, leng }) => {
     <div ref={serviceContainerRef}
       className="h-[100vh] container mx-auto flex items-center !justify-center font-poppins !z-[999] relative overflow-hidden">
       <motion.div
-        className="w-full md:w-[60%]"
+        className="w-full lg:w-[60%]"
       >
         {
           data2.length > 0 &&
           <NetworkVisual styles={'networks'} tags={data2[activeIndex].subServices} radius={240} bgcolor={data2[activeIndex].color} />
         }
       </motion.div>
-      <div className="w-full md:static absolute bottom-[10px] px-2 rounded-lg bg-transparent backdrop-blur-xsd md:backdrop-blur-none">
+      <div className="w-full bg-[#00000034] md:bg-transparent lg:static absolute bottom-[5px]  rounded-lg  min-h-[180px] box-border p-2 backdrop-blur-xs md:backdrop-blur-none">
         <h1 className="text-sm md:text-lg text-green">Our Service</h1>
         {
           data2.length > 0 &&
           <div className="service-text space-y-2">
-            <h2 className="text-white text-xl md:text-4xl">{data2[activeIndex].name}</h2>
-            <p className="text-green text-lg md:text-xl leading-relaxed">{data2[activeIndex].description}</p>
+            <h2 className="text-white text-xl lg:text-4xl">{data2[activeIndex].name}</h2>
+            <p className="text-green text-lg lg:text-xl md:w-1/2 lg:w-auto leading-relaxed">{data2[activeIndex].description}</p>
           </div>
         }
       </div>

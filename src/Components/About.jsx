@@ -14,11 +14,10 @@ const About = () => {
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
   const mobileSettings = {
-    end: '+=1500',
+    end: 'bottom bottom',
   };
   const desktopSettings = {
-    end: '+=9000',
-
+    end: 'bottom bottom',
   };
 
   const textContent = [
@@ -28,69 +27,86 @@ const About = () => {
   ];
 
   useGSAP(() => {
-    // let sections = textContent.length;
     let tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.About',
-        pin: true,
         start: "top top",
         scrub: 1,
         ...(isMobile ? mobileSettings : desktopSettings)
-
-
       }
     });
 
     textContent.forEach((_, index) => {
       const split = new SplitType(textRefs.current[index], { types: "words" });
 
-      // Initial hide
       gsap.set(split.words, {
         opacity: 0,
-        y: 10,
+        y: 30,
+        rotateX: 20,
+        scale: 0.9,
+        filter: "blur(8px)",
       });
 
-      // Create animation sequence
       tl.to(textRefs.current[index], {
         opacity: 1,
-        duration: 1,
+        duration: 0.8,
+        ease: "power2.out",
         onStart: () => setActiveIndex(index)
       })
+      
       tl.to(split.words, {
         opacity: 1,
         y: 0,
-
-        stagger: 0.1,
-        ease: "power2.inOut"
-      },)
-      tl.to(textRefs.current[index], {
+        rotateX: 0,
+        scale: 1,
+        filter: "blur(0px)",
+        stagger: {
+          amount: 1.5, 
+          from: "start",
+          ease: "power2.out"
+        },
+        duration: 1.5,
+        ease: "back.out(1.2)"
+      })
+      
+      tl.to(split.words, {
         opacity: 0,
-        scale: 0.8,
-        rotateX: 70,
-        y: -10,
-      }, "+=1.5");
+        y: -20,
+        rotateX: -15,
+        scale: 0.9,
+        filter: "blur(4px)",
+        stagger: {
+          amount: 0.8,
+          from: "end",
+          ease: "power2.in"
+        },
+        duration: 1.2,
+        ease: "power2.inOut"
+      }, "+=1.0"); 
     });
   }, []);
 
   return (
     <>
-
       <div ref={containerRef} className="h-screen relative overflow-hidden">
-        <div className="sticky top-0 h-screen  flex items-center justify-center">
-
+        <div className="absolute top-0 h-screen flex items-center justify-center">
           {textContent.map((text, index) => (
             <div
               key={index}
               ref={el => (textRefs.current[index] = el)}
-              className={`fixed text-center   text-3xl lg:text-5xl xl:text-[50px] text-white md:w-[70%] leading-tight transition-opacity ${activeIndex === index ? 'opacity-100' : 'opacity-100 pointer-events-none'
-                }`}
+              className={`fixed text-center text-3xl lg:text-5xl xl:text-[50px] text-white md:w-[70%] leading-tight transition-opacity ${
+                activeIndex === index ? 'opacity-100' : 'opacity-100 pointer-events-none'
+              }`}
               dangerouslySetInnerHTML={{ __html: text }}
+              style={{
+                willChange: 'transform, opacity, filter',
+                backfaceVisibility: 'hidden'
+              }}
             />
           ))}
         </div>
       </div>
     </>
-
   );
 };
 

@@ -64,42 +64,45 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
       .timeline({
         scrollTrigger: {
           trigger: ".About",
-          start: "top center",
-          end: "top center",
+          start: "top top",
+          end: "bottom bottom",
           scrub: true,
         },
       })
       .fromTo(
         ".aboutcount",
-        { opacity: 0, display: "none" },
-        { opacity: 1, rotateY: 0, y: 0, duration: 0.1, display: "flex" }
-      );
+        {  display: "none" },
+        {  display: "flex" }
+      )
+ 
 
     // Main cards animation timeline
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: ".Indust",
-        scrub: 1,
+        scrub: true,
+        
         start: "top top",
         onEnter: () => {
-          gsap.set(".Incont", { display: "flex" });
+          // gsap.set(".Incont", { display: "flex" });
           // Reset cards to initial state when entering
           resetCardsToInitialState();
         },
-        onLeave: () => gsap.set(".Incont", { display: "none" }),
+        // onLeave: () => gsap.set(".Incont", { display: "none" }),
         onEnterBack: () => {
-          gsap.set(".Incont", { display: "flex" });
+          // gsap.set(".Incont", { display: "flex" });
           // Reset cards when scrolling back
           resetCardsToInitialState();
         },
         ...(isMobile ? mobileSettings : desktopSettings),
       },
     });
-    tl.to(".aboutcount", { opacity: 0, duration: 0.1 }).fromTo(
+    tl.to(".aboutcount", { display: 'none',  })
+    .fromTo(
       ".Incont",
       { display: "none" },
-      { display: "flex", duration: 0.1 },
-      "+=0.5"
+      { display: "flex",  },
+      "-=1.1"
     );
 
     // ENHANCED CARD ANIMATION
@@ -109,6 +112,8 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
     cards.forEach((card, index) => {
       gsap.set(card, {
         // rotate: -5 * index,
+        boxShadow: "0 0 40px rgba(59, 130, 246, 0.5)",
+
         rotateY: 0,
         zIndex: cards.length - index,
         x: "0%",
@@ -216,7 +221,8 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
         ".braincont",
         { opacity: 0, display: "none" },
         { opacity: 1, y: 0, duration: 1, display: "flex" }
-      );
+      )
+      
 
     // Believe section timeline
     gsap
@@ -300,7 +306,7 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
       .fromTo(
         ".footercount",
         { opacity: 0, display: "none" },
-        { opacity: 1, duration: 0.5, display: "flex" }
+        { opacity: 1, duration: 0.1, display: "flex" }
       );
 
     gsap.to(".hero", {
@@ -397,9 +403,9 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="text-5xl text-center flex gap-2 font-poppins md:text-7xl leading-tight tracking-wide"
+            className="text-5xl text-center flex  items-center  justify-center gap-2 font-poppins lg:text-7xl leading-tight tracking-wide"
           >
-            <h1 className="drtitle flex items-center justify-center gap-4 flex-wrap">
+            <h1 className="drtitle flex items-center  justify-center gap-4 flex-wrap">
               Dream it,{" "}
               <span className="text-green">
                 <span className="border-b-1 flex items-center gap-4 font-poppins">
@@ -413,7 +419,7 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.5, duration: 0.6 }}
-            className="mt-4 drtitle font-Raleway text-center translate-y-14 text-sm px-4 md:text-xl font-light text-gray-200"
+            className="mt-2 lg:mt-4 drtitle font-Raleway text-center translate-y-14 text-sm px-4 md:text-lg lg:text-xl font-light text-gray-200"
           >
             Redefining Business Excellence, where AI Meets Business
             Transformation.
@@ -422,34 +428,31 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
       </div>
 
       <div className="fixed top-1/2 w-full h-screen lg:overflow-hidden overflow-auto left-1/2 text-white -translate-x-1/2 -translate-y-1/2">
-        <div className="aboutcount flex h-[100vh] items-center justify-center">
+        <div className="aboutcount  flex items-center justify-center h-screen ">
           <motion.p
             initial={{ y: 200 }}
             whileInView={{ y: 0 }}
-            className="text-green text-2xl md:text-4xl absolute top-[15vh] md:top-[5vh] left-1/2 -translate-x-1/2"
+            className="text-green text-2xl lg:text-4xl absolute top-[15vh] lg:top-[5vh] left-1/2 -translate-x-1/2"
           >
             Who we are
           </motion.p>
-          <SmoothScrollProvider>
             <About />
-          </SmoothScrollProvider>
         </div>
 
         <div className="Incont absolute top-0 left-0 w-full h-screen">
-          <div className="container z-[900] mx-auto flex md:flex-row flex-col-reverse items-center pb-[13vh] justify-between md:justify-around h-full">
+          <div className="container z-[900] mx-auto flex lg:flex-row flex-col-reverse items-center pb-[5vh] md:pb-0 lg:pb-[5vh] lg:px-[100px] justify-between md:justify-around h-full">
             <motion.h1
               initial={{ y: -50, rotateX: 60, opacity: 0 }}
               whileInView={{ y: 0, rotateX: 0, opacity: 1 }}
               transition={{ duration: 0.4 }}
-              className="Intitle text-2xl px-2 text-center md:text-3xl lg:text-5xl md:w-1/2"
+              className="Intitle text-2xl px-2 text-center md:text-2xl lg:text-5xl md:w-1/2"
             >
               AI <span className="text-green">Solutions</span> Across <br />{" "}
               Every <span className="text-green">Sectors</span>
             </motion.h1>
 
-            <SmoothScrollProvider>
               <div
-                className="relative w-full h-[70%] md:h-auto md:w-1/2"
+                className="relative w-full h-[70%]  lg:h-auto lg:w-1/2"
                 style={{ perspective: "1000px" }}
               >
                 {data.map((data, index) => (
@@ -464,20 +467,17 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
                   />
                 ))}
               </div>
-            </SmoothScrollProvider>
           </div>
         </div>
 
         {/* Other sections remain unchanged */}
         <div className="servicecount opacity-0 absolute top-0 left-0 w-full h-screen flex items-center justify-center">
-          <SmoothScrollProvider>
             <Service data2={data2} leng={leng} />
-          </SmoothScrollProvider>
         </div>
 
         <div className="braincont md:py-0 py-6 opacity-0 absolute top-0 left-0 overflow-auto w-full flex !z-[900] h-screen items-center justify-center">
-          <div className="container mx-auto space-y-5 mb-0 px-4 md:px-0 !z-[900]">
-            <div className="font-Raleway font-semibold text-center text-lg md:text-3xl text-white leading-relaxed uppercase xl:w-3/4 w-full mx-auto">
+          <div className="container mx-auto space-y-5 mb-0 px-4 md:px-0 lg:px-[100px] !z-[900]">
+            <div className="font-Raleway flex md:flex-nowrap lg:flex-wrap flex-wrap gap-2 items-center justify-center  font-semibold text-center text-lg md:text-xl lg:text-3xl text-white leading-relaxed uppercase xl:w-3/4 w-full mx-auto">
               Meet the <span className="text-green font-Raleway">Brains</span>{" "}
               behind the{" "}
               <span className="text-green flex overflow-hidden items-center justify-center gap-2 font-Raleway">
@@ -485,7 +485,7 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
                 <Word>CODAGENTIC</Word>
               </span>
             </div>
-            <div className="flex gap-10 items-center justify-around md:justify-center flex-wrap">
+            <div className="flex gap-6 lg:gap-10 md:gap-2 items-center justify-around md:justify-center md:flex-nowrap flex-wrap">
               {data4.length >= 2 && (
                 <>
                   <Profilecard
@@ -528,15 +528,15 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
       </div>
 
       {/* Scroll Triggers */}
-      <div id="intro" className="About h-[100vh] md:h-[500vh] w-full"></div>
-      <div id="industries" className="Indust h-[600vh] md:h-[1600vh]"></div>
-      <div id="service" className="Service h-[300vh] md:h-[600vh] w-full"></div>
-      <div id="about" className="Brains h-[200vh] md:h-[400vh] w-full"></div>
-      <div className="Belive md:h-[200vh] h-[100vh] w-full"></div>
-      <div className="Client h-[200vh] md:h-[400vh] w-full"></div>
-      <div id="blogs" className="Blogs h-[200vh] md:h-[400vh] w-full"></div>
-      <div id="contact" className="Contact h-[300vh] md:h-[400vh] w-full"></div>
-      <div className="Footer h-[300vh] md:h-[400vh] w-full"></div>
+      <div id="intro" className="About  h-[300vh] md:h-[500vh] lg:h-[1000vh] "></div>
+      <div id="industries" className="Indust   h-[700vh] md:h-[800vh] lg:h-[1000vh]"></div>
+      <div id="service" className="Service  h-[600vh] md:h-[1000vh] w-full"></div>
+      <div id="about" className="Brains h-[200vh]  md:h-[300vh] lg:h-[400vh] w-full"></div>
+      <div className="Belive md:h-[200vh] h-[300vh]  w-full"></div>
+      <div className="Client h-[150vh]  md:h-[300vh] lg:h-[400vh]  w-full"></div>
+      <div id="blogs" className="Blogs  h-[200vh] md:h-[300vh] lg:h-[400vh] w-full"></div>
+      <div id="contact" className="Contact h-[400vh]  md:h-[400vh] w-full"></div>
+      <div className="Footer h-[300vh] md:h-[400vh]  w-full"></div>
     </div>
   );
 };

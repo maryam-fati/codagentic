@@ -54,20 +54,21 @@ const Contact = () => {
   };
   return (
     <div className="   min-h-screen   ">
-      <section className="font-Raleway my-[10vh] md:my-0 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2   text-white  md:px-20 lg:px-32  w-full ">
+      <section className="font-Raleway  lg:py-32 md:my-0  md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2   text-white  md:px-4  lg:px-36  w-full ">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{
             opacity: 1,
             transition: { duration: 0.6, delay: 0.2 },
           }}
-          className="  xl:w-3/4 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 backdrop-blur-xl md:backdrop-blur-[2px] shadow-2xl shadow-black bg-[#0000000a] px-4 py-6 xl:p-8 rounded-xl"
+          className="  xl:w-3/4 md:w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 backdrop-blur-xl md:backdrop-blur-[2px] shadow-2xl shadow-black bg-[#0000000a] px-4 py-2   xl:p-8 rounded-xl"
         >
           <motion.div
             initial={{ x: 50 }}
             whileInView={{ x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 1, delay: 0.2 }}
+            className="lg:py-0 md:py-10"
           >
             <motion.h3
               initial={{ opacity: 0, y: 20 }}
@@ -79,7 +80,7 @@ const Contact = () => {
                   ease: [0.23, 1, 0.32, 1],
                 },
               }}
-              className="text-sm text-gray-400 uppercase tracking-widest"
+              className="text-sm md:text-xs text-gray-400 uppercase tracking-widest"
             >
               Contact
             </motion.h3>
@@ -94,7 +95,7 @@ const Contact = () => {
                   ease: [0.23, 1, 0.32, 1],
                 },
               }}
-              className="text-4xl md:text-5xl font-semibold mt-2"
+              className="text-4xl md:text-2xl lg:text-5xl font-semibold mt-2"
             >
               Let's build the <br /> future together.
             </motion.h2>
@@ -110,7 +111,7 @@ const Contact = () => {
                   ease: [0.23, 1, 0.32, 1],
                 },
               }}
-              className="text-gray-300 mt-4"
+              className="text-gray-300 text-xs lg:mt-4 mt-2"
             >
               Redefining Business Excellence, where AI Meets Business <br />
               Transformation. Let's bring your boldest ideas to life with <br />
@@ -158,6 +159,7 @@ const Contact = () => {
                   />
                 </motion.div>
                 <motion.div
+                className=""
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{
                     opacity: 1,
@@ -213,7 +215,7 @@ const Contact = () => {
             whileInView={{ x: 0 }}
             viewport={{ once: false }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="flex flex-wrap flex-col justify-center"
+            className="flex flex-wrap  flex-col justify-center"
           >
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -356,13 +358,13 @@ const Contact = () => {
                   ease: [0.23, 1, 0.32, 1],
                 },
               }}
-              className="text-green flex flex-nowrap items-center justify-start gap-1 md:1/2"
+              className="text-green flex flex-nowrap items-center justify-start  md:1/2"
             >
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 target="_blank"
                 href={`${linkedin}`}
-                className="group hover:bg-green hover:scale-105  transition-all duration-300 ease-in-out  p-3  rounded-full"
+                className="group hover:bg-green hover:scale-105  transition-all duration-300 ease-in-out    rounded-full"
               >
                 {" "}
                 <Linkedin className="group-hover:text-white" />

@@ -44,13 +44,13 @@ const Clients = ({data}) => {
 
   const Card = ({ role, name, des, styles, index }) => {
     return (
-      <div className="px-4">
+      <div className="py-4 px-2 ">
 
         <motion.div
           ref={(el) => (cardRefs.current[index] = el)}
           transition={{ duration: 1, delay: index * 0.2 }}
           // Add 'card' class for CSS targeting
-          className={` ${styles} relative flex-col mx-auto lg:h-[400px] pb-2 rounded-3xl  w-full h-full font-Raleway  cursor-grab shadow-lg shadow-black  flex   items-center md:justify-around justify-center gap-4 backdrop-blur-sm  `}
+          className={` ${styles} relative flex-col mx-auto md:h-[300px] lg:h-[400px] pb-2 rounded-3xl  w-full h-full font-Raleway  cursor-grab shadow-md shadow-black  flex   items-center md:justify-around justify-center gap-4 backdrop-blur-sm  `}
         >
           {/* <div className="relative  overflow-hidden  rounded-full size-[200px]    ">
             <img className='    hover:scale-110 transition-all duration-500 ease-in-out  rounded-full size-full object-cover  object-center ' src={img} alt={name} />
@@ -165,8 +165,8 @@ const Clients = ({data}) => {
     <div ref={containerRef} className="relative  min-h-screen">
       <div className=" mx-auto flex flex-col my-[15vh] md:my-0   items-center justify-center  lg:px-10 container md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2  space-y-10 text-[white] font-poppins">
         <div className="flex flex-wrap items-center  justify-between space-y-20 uppercase xl:p-10">
-          <h2 ref={titleRef} className="lg:text-4xl text-lg px-2 text-center     md:mx-0 mx-auto ">
-            Partnered with the boldest names in the game
+          <h2 ref={titleRef} className="lg:text-4xl md:text-xl text-lg px-2 text-center     md:mx-0 mx-auto ">
+            Partnered with the <span className="text-green ">boldest names</span> in the game
           </h2>
           {/* <p className="xl:w-1/5 lg:w-1/5 text-center md:text-right">
           </p> */}

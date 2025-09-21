@@ -9,14 +9,10 @@ import {
   Factory,
   Newspaper,
   Headset,
-  Play,
-  Pause,
-  RotateCcw,
 } from "lucide-react";
 
 const Navbar = ({
-  isPlaying,
-  togglePlay,
+
   disabled = false,
   isAutoScrolling,
   startAutoScroll,
@@ -27,6 +23,7 @@ const Navbar = ({
   const [isHidden, setIsHidden] = useState(false);
   const [lastScrollY, setaLastScrollY] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
+  
 
   const sections = [
     "intro",
@@ -37,25 +34,6 @@ const Navbar = ({
     "contact",
   ];
 
-  // Scroll handler to hide/show logo and soundwave
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsHidden(true);
-      } else if (currentScrollY < lastScrollY || currentScrollY <= 100) {
-        setIsHidden(false);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  // Section observer for active navigation
   useEffect(() => {
     const observers = [];
     const options = { threshold: 0.1 };
@@ -76,73 +54,77 @@ const Navbar = ({
     });
 
     return () => observers.forEach((observer) => observer.disconnect());
-  }, [isScrolling]);
+  }, [isScrolling,sections,selectedOption]);
 
-  // Enhanced navigation click handler with additional smooth scroll
   const handleNavClick = (sectionId) => {
     const section = document.getElementById(sectionId);
-    if (!section || isScrolling) return;
-
     setIsScrolling(true);
-
-    // Special handling for intro section - scroll to very top
     if (sectionId === "intro") {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
-
-      // Set intro as selected when reaching top
-      setSelectedOption("intro");
-
+      setSelectedOption(sectionId);
       setTimeout(() => {
         setIsScrolling(false);
       }, 800);
       return;
     }
-
-    // Only apply additional scroll for industries section
-    if (sectionId === "industries") {
-      const additionalScroll = window.innerHeight * 1.2;
-
-      // Get initial scroll position
+    if (sectionId === "service") {
+      const additionalScroll = window.innerHeight * 1.4;
       const initialScroll = window.pageYOffset;
       const sectionTop = section.getBoundingClientRect().top + initialScroll;
-
-      // First scroll to section
       window.scrollTo({
         top: sectionTop,
         behavior: "smooth",
       });
-
-      // Wait for first scroll to complete
+      setSelectedOption(sectionId);
       const checkScroll = setInterval(() => {
         if (Math.abs(window.pageYOffset - sectionTop) < 10) {
           clearInterval(checkScroll);
-
-          // Now do the additional scroll
           window.scrollTo({
             top: sectionTop + additionalScroll,
             behavior: "smooth",
           });
-
-          // Reset scrolling state after complete animation
+          setTimeout(() => {
+            setIsScrolling(false);
+            
+          }, 1000);
+        }
+      }, 100);
+      setTimeout(() => {
+        clearInterval(checkScroll);
+        setIsScrolling(false);
+      }, 5000);
+    } else   if (sectionId === "industries") {
+      const additionalScroll = window.innerHeight * 2.5;
+      const initialScroll = window.pageYOffset;
+      const sectionTop = section.getBoundingClientRect().top + initialScroll;
+      window.scrollTo({
+        top: sectionTop,
+        behavior: "smooth",
+      });
+      setSelectedOption(sectionId);
+      const checkScroll = setInterval(() => {
+       if (Math.abs(window.pageYOffset - sectionTop) < 10) {
+          clearInterval(checkScroll);
+          window.scrollTo({
+            top: sectionTop + additionalScroll,
+            behavior: "smooth",
+          });
           setTimeout(() => {
             setIsScrolling(false);
           }, 1000);
         }
       }, 100);
-
-      // Failsafe to clear interval and reset state
       setTimeout(() => {
         clearInterval(checkScroll);
         setIsScrolling(false);
       }, 5000);
-    } else {
-      // For other sections, just do normal scroll
+    }  
+    else {
       section.scrollIntoView({ behavior: "smooth" });
-
-      // Reset scrolling state after basic scroll
+      setSelectedOption(sectionId);
       setTimeout(() => {
         setIsScrolling(false);
       }, 800);
@@ -163,8 +145,10 @@ const Navbar = ({
         }}
         className="relative md:fixed top-2 left-0 z-[999] flex items-center justify-between w-full px-2 md:px-10"
       >
-        <a href="/" className="w-[200px]">
+        <a href="/" className="w-[150px] text-white text-3xl lg:w-[200px]">
           <img className="object-cover" src={"/logo.png"} alt="logo" />
+                {/* <h1>{isScrolling ? "Scrolling..." : "Not scrolling"}</h1> */}
+
         </a>
         <div className="flex items-center gap-4">
           {/* <SoundWave isPlaying={isPlaying} togglePlay={togglePlay} /> */}
@@ -184,7 +168,7 @@ const Navbar = ({
           }}
           key="nav-list"
           className={`hidden ${
-            disabled ? "md:hidden" : "md:flex md:flex-col"
+            disabled ? "lg:hidden" : "lg:flex lg:flex-col"
           } py-[10px] px-[15px] shadow-sm shadow-black backdrop-blur-lg fixed gap-3 rounded-lg z-[999] top-[50%] -translate-y-1/2 left-5`}
         >
           {sections.map((section) => (
@@ -193,7 +177,7 @@ const Navbar = ({
               onClick={() => handleNavClick(section)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className={`p-[12px] text-center !border-green !border-[1px] shadow-sm shadow-green flex items-center justify-center rounded-full text-sm cursor-pointer uppercase hover:bg-green hover:text-white transition-all duration-300 ${
+              className={`p-[12px] text-center !border-green !border-[1px] shadow-sm shadow-green flex items-center justify-center rounded-full text-sm cursor-pointer uppercase hover:bg-green hover:text-white transition-all duration-75 ${
                 selectedOption === section
                   ? "text-gray-100 bg-green"
                   : "text-[white]"
