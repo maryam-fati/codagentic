@@ -440,7 +440,7 @@ const ScrollFixedAnimation = ({ data, data4 }) => {
         </div>
 
         <div className="Incont absolute top-0 left-0 w-full h-screen">
-          <div className="container z-[900] mx-auto flex lg:flex-row flex-col-reverse items-center pb-[5vh] md:pb-0 lg:pb-[5vh] lg:px-[100px] justify-between md:justify-around h-full">
+          <div className="container z-[900] mx-auto flex lg:flex-row flex-col-reverse items-center pb-[5vh] md:pb-0 lg:pb-[5vh]  justify-between md:justify-around h-full">
             <motion.h1
               initial={{ y: -50, rotateX: 60, opacity: 0 }}
               whileInView={{ y: 0, rotateX: 0, opacity: 1 }}

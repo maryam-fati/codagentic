@@ -177,43 +177,43 @@ const restartAutoScroll = () => {
   }, []);
 
   // Audio control based on scroll
-  // useEffect(() => {
-  //   const audio = audioRef.current;
+  useEffect(() => {
+    const audio = audioRef.current;
 
-  //   const handleScrollStart = () => {
-  //     // Only play if showwell is false (Welcome component is not shown)
-  //     if (showwell) return;
+    const handleScrollStart = () => {
+      // Only play if showwell is false (Welcome component is not shown)
+      // if (showwell) return;
 
-  //     if (audio.paused) {
-  //       audio.play().catch(console.error);
-  //     }
-  //     gsap.to(audio, { volume: 0.3, duration: 0.5 });
-  //     setIsPlaying(true);
-  //   };
+      if (audio.paused) {
+        audio.play().catch(console.error);
+      }
+      gsap.to(audio, { volume: 0.3, duration: 0.5 });
+      setIsPlaying(true);
+    };
 
-  //   const handleScrollEnd = debounce(() => {
-  //     // Stop audio when scrolling stops
-  //     gsap.to(audio, {
-  //       volume: 0,
-  //       duration: 1,
-  //       onComplete: () => {
-  //         audio.pause();
-  //         setIsPlaying(false);
-  //       }
-  //     });
-  //   }, 2000); // 2 seconds after scroll stops
+    const handleScrollEnd = debounce(() => {
+      // Stop audio when scrolling stops
+      gsap.to(audio, {
+        volume: 0,
+        duration: 1,
+        onComplete: () => {
+          audio.pause();
+          setIsPlaying(false);
+        }
+      });
+    }, 2000); // 2 seconds after scroll stops
 
-  //   const handleScroll = () => {
-  //     handleScrollStart();
-  //     handleScrollEnd();
-  //   };
+    const handleScroll = () => {
+      handleScrollStart();
+      handleScrollEnd();
+    };
 
-  //   window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
-  //   return () => {
-  //     window.removeEventListener('scroll', handleScroll);
-  //   };
-  // }, [showwell]); // Add showwell as dependency
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [showwell]); // Add showwell as dependency
 
   // Start audio when showwell becomes false
   // useEffect(() => {
@@ -475,10 +475,10 @@ const restartAutoScroll = () => {
       </div>
 
       {/* {showwell && ( */}
-      {/* <Welcome
+      <Welcome
             togglePlay={togglePlay}
             startAutoScroll={startAutoScrollInterval}
-          /> */}
+          />
       {/* )} */}
 
       <SmoothScrollProvider>
